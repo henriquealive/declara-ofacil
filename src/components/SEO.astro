@@ -1,0 +1,49 @@
+---
+// src/components/SEO.astro
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  type?: string;
+  keywords?: string;
+}
+
+const { title, description, canonical, type = 'website', keywords } = Astro.props;
+const siteUrl  = import.meta.env.PUBLIC_SITE_URL ?? 'https://declaracaofacil.online';
+const siteName = 'DeclaraFácil';
+const fullUrl  = `${siteUrl}${canonical}`;
+---
+<title>{title} | {siteName}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={fullUrl} />
+{keywords && <meta name="keywords" content={keywords} />}
+
+<meta property="og:title"       content={`${title} | ${siteName}`} />
+<meta property="og:description" content={description} />
+<meta property="og:type"        content={type} />
+<meta property="og:url"         content={fullUrl} />
+<meta property="og:image"       content={`${siteUrl}/og-image.png`} />
+<meta property="og:locale"      content="pt_BR" />
+<meta property="og:site_name"   content={siteName} />
+
+<meta name="twitter:card"        content="summary_large_image" />
+<meta name="twitter:title"       content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image"       content={`${siteUrl}/og-image.png`} />
+
+<meta name="robots" content="index, follow" />
+<meta name="author" content={siteName} />
+
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": type === 'article' ? 'Article' : 'WebPage',
+  "name": title,
+  "description": description,
+  "url": fullUrl,
+  "inLanguage": "pt-BR",
+  "publisher": {
+    "@type": "Organization",
+    "name": siteName,
+    "url": siteUrl
+  }
+})} />

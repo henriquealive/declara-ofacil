@@ -1,0 +1,47 @@
+---
+// src/components/Footer.astro
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">DeclaraFácil</span>
+        <p class="footer-desc">
+          Gere declarações simples, gratuitas e prontas para imprimir.
+          Nenhum dado é enviado a servidores — tudo fica no seu navegador.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Declarações</h4>
+        <ul>
+          <li><a href="/declaracao-de-residencia">Residência</a></li>
+          <li><a href="/declaracao-de-renda">Renda</a></li>
+          <li><a href="/declaracao-de-comparecimento">Comparecimento</a></li>
+          <li><a href="/declaracao-de-hipossuficiencia">Hipossuficiência</a></li>
+          <li><a href="/declaracao-de-uniao-estavel">União Estável</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Informações</h4>
+        <ul>
+          <li><a href="/sobre">Sobre o Site</a></li>
+          <li><a href="/privacidade">Política de Privacidade</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© {year} DeclaraFácil — Todos os direitos reservados.</span>
+      <span>Feito no Brasil 🇧🇷</span>
+    </div>
+
+    <p class="footer-disclaimer">
+      <strong>Aviso legal:</strong> As declarações geradas neste site são modelos de documento informal.
+      Não substituem orientação jurídica profissional. Para situações que exijam validade jurídica formal,
+      consulte um advogado ou tabelião de notas.
+    </p>
+  </div>
+</footer>

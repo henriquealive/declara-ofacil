@@ -1,0 +1,370 @@
+---
+// src/layouts/DeclaracaoLayout.astro
+import BaseLayout from './BaseLayout.astro';
+import AdUnit from '../components/AdUnit.astro';
+import type { TipoDeclaracao } from '../lib/declaracoes';
+import { declaracoes } from '../lib/declaracoes';
+
+interface Props {
+  declaracao: TipoDeclaracao;
+}
+
+const { declaracao } = Astro.props;
+const {
+  slug,
+  titulo,
+  descricao,
+  metaTitle,
+  metaDescription,
+  keywords,
+  campos,
+  template,
+  faq,
+} = declaracao;
+
+// Schema.org — WebApplication
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": titulo,
+  "url": `${import.meta.env.PUBLIC_SITE_URL ?? 'https://declaracaofacil.online'}/${slug}`,
+  "description": metaDescription,
+  "applicationCategory": "LegalApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "inLanguage": "pt-BR",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "BRL"
+  }
+};
+
+// Schema.org — FAQPage
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faq.map(item => ({
+    "@type": "Question",
+    "name": item.pergunta,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.resposta
+    }
+  }))
+};
+
+// Outras declarações (para links internos)
+const outras = declaracoes.filter(d => d.slug !== slug);
+
+// Dados serializáveis para o script client-side
+const clientCampos  = campos;
+const clientTemplate = template;
+---
+
+<BaseLayout
+  title={metaTitle}
+  description={metaDescription}
+  canonical={`/${slug}`}
+  keywords={keywords}
+>
+  <!-- Extra Schema no <head> -->
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  </Fragment>
+
+  <!-- ══ HERO ════════════════════════════════ -->
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Início</a>
+        <span aria-hidden="true">›</span>
+        <span aria-current="page">{titulo}</span>
+      </nav>
+      <h1>{titulo}</h1>
+      <p class="page-hero__desc">{descricao}</p>
+    </div>
+  </section>
+
+  <!-- ══ FORMULÁRIO ══════════════════════════ -->
+  <section class="form-section" id="form-section">
+    <div class="container">
+      <div class="form-card">
+        <h2>Preencha os dados</h2>
+        <p class="form-hint">Campos marcados com <span style="color:var(--color-error)">*</span> são obrigatórios. Nenhum dado é enviado a servidores.</p>
+
+        <hr class="form-divider" />
+
+        <form id="declaracao-form" novalidate>
+          {campos.map((campo) => (
+            <div class="form-group">
+              <label for={campo.id} class="label">
+                {campo.label}
+                {campo.obrigatorio && (
+                  <span class="required" aria-label="obrigatório"> *</span>
+                )}
+              </label>
+              {campo.tipo === 'textarea' ? (
+                <textarea
+                  id={campo.id}
+                  name={campo.id}
+                  placeholder={campo.placeholder}
+                  required={campo.obrigatorio}
+                  class="input input-textarea"
+                  rows={3}
+                />
+              ) : (
+                <input
+                  type={campo.tipo}
+                  id={campo.id}
+                  name={campo.id}
+                  placeholder={campo.placeholder}
+                  required={campo.obrigatorio || undefined}
+                  class="input"
+                  autocomplete="off"
+                />
+              )}
+            </div>
+          ))}
+
+          <button type="submit" class="btn btn-primary btn-lg btn-full" id="gerar-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="8" y1="13" x2="16" y2="13"/>
+              <line x1="8" y1="17" x2="12" y2="17"/>
+            </svg>
+            Gerar Declaração Agora
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ ANÚNCIO 1 — entre form e preview (aparece só após gerar) ══ -->
+  <div id="ad-pos-1" hidden>
+    <AdUnit slot="1111111111" format="horizontal" fullWidth label="Após geração" />
+  </div>
+
+  <!-- ══ PREVIEW A4 (oculto até gerar) ═══════ -->
+  <section id="preview-section" class="preview-section" hidden aria-live="polite">
+    <div class="container">
+      <div class="preview-card">
+        <!-- Barra de ações (oculta na impressão via .no-print) -->
+        <div class="preview-toolbar no-print" aria-hidden="false">
+          <h2>Declaração gerada ✓</h2>
+          <div class="btn-group" role="group" aria-label="Ações da declaração">
+            <button id="print-btn" class="btn btn-white" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <polyline points="6 9 6 2 18 2 18 9"/>
+                <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/>
+                <rect x="6" y="14" width="12" height="8"/>
+              </svg>
+              Imprimir
+            </button>
+            <button id="copy-btn" class="btn btn-outline-white" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+              </svg>
+              Copiar Texto
+            </button>
+            <button id="novo-btn" class="btn btn-outline-white" type="button">
+              Nova declaração
+            </button>
+          </div>
+        </div>
+
+        <!-- Área A4 impressível -->
+        <div
+          class="preview-declaracao"
+          id="preview-content"
+          role="document"
+          aria-label="Prévia da declaração gerada"
+        ></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ ANÚNCIO 2 — depois do preview ════════ -->
+  <AdUnit slot="2222222222" format="rectangle" label="Meio da página" />
+
+  <!-- ══ COMO FUNCIONA ═════════════════════════ -->
+  <section class="content-section">
+    <div class="container">
+      <h2>Como funciona?</h2>
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Preencha</h3>
+          <p>Informe seus dados no formulário acima. Nada é enviado a servidores — tudo fica no seu navegador.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Gere</h3>
+          <p>Clique em "Gerar Declaração" e veja o documento pronto, com formato de folha A4, em instantes.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Imprima ou copie</h3>
+          <p>Use o botão "Imprimir" para gerar o PDF ou a versão física, pronta para assinar e usar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FAQ ════════════════════════════════════ -->
+  <section class="faq-section content-section">
+    <div class="container">
+      <h2>Perguntas Frequentes</h2>
+      <div class="faq-list" role="list">
+        {faq.map((item, i) => (
+          <details class="faq-item" open={i === 0}>
+            <summary class="faq-question">{item.pergunta}</summary>
+            <p class="faq-answer">{item.resposta}</p>
+          </details>
+        ))}
+      </div>
+
+      <!-- Links internos: outras declarações -->
+      <div class="related-links">
+        <h3>Outras declarações gratuitas</h3>
+        <div class="related-links-grid">
+          {outras.map(d => (
+            <a href={`/${d.slug}`} class="related-link">{d.titulo}</a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ ANÚNCIO 3 — antes do footer ══════════ -->
+  <AdUnit slot="3333333333" format="horizontal" fullWidth label="Antes do rodapé" />
+
+</BaseLayout>
+
+<!-- ══ CLIENT-SIDE SCRIPT (define:vars serializa configs) ═══════ -->
+<script define:vars={{ campos: clientCampos, template: clientTemplate }}>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form          = document.getElementById('declaracao-form');
+    const previewSec    = document.getElementById('preview-section');
+    const previewEl     = document.getElementById('preview-content');
+    const adPos1        = document.getElementById('ad-pos-1');
+    const printBtn      = document.getElementById('print-btn');
+    const copyBtn       = document.getElementById('copy-btn');
+    const novoBtn       = document.getElementById('novo-btn');
+
+    if (!form || !previewSec || !previewEl) return;
+
+    /* ── Submissão do formulário ─────────────── */
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Validação básica de obrigatórios
+      let valido = true;
+      campos.forEach(function (campo) {
+        const el = document.getElementById(campo.id);
+        if (!el) return;
+        if (campo.obrigatorio && !el.value.trim()) {
+          el.classList.add('input-error');
+          valido = false;
+        } else {
+          el.classList.remove('input-error');
+        }
+      });
+      if (!valido) {
+        const primeiro = form.querySelector('.input-error');
+        if (primeiro) primeiro.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      // Coleta valores
+      const formData = new FormData(form);
+      const dados = {};
+      for (const [key, value] of formData.entries()) {
+        dados[key] = String(value).trim();
+      }
+
+      // Substitui placeholders {{campo}} no template
+      let texto = template;
+      Object.keys(dados).forEach(function (key) {
+        const regex = new RegExp('\\{\\{' + key + '\\}\\}', 'g');
+        texto = texto.replace(regex, dados[key] || '[' + key + ']');
+      });
+
+      // Renderiza preview
+      previewEl.textContent = texto;
+      previewSec.hidden = false;
+      if (adPos1) adPos1.hidden = false;
+
+      // Scroll suave para o preview
+      setTimeout(function () {
+        previewSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 80);
+    });
+
+    /* ── Remove erro ao digitar ──────────────── */
+    campos.forEach(function (campo) {
+      const el = document.getElementById(campo.id);
+      if (el) {
+        el.addEventListener('input', function () {
+          el.classList.remove('input-error');
+        });
+      }
+    });
+
+    /* ── Botão Imprimir ──────────────────────── */
+    if (printBtn) {
+      printBtn.addEventListener('click', function () {
+        window.print();
+      });
+    }
+
+    /* ── Botão Copiar ────────────────────────── */
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function () {
+        const texto = previewEl ? (previewEl.textContent || '') : '';
+
+        function sucesso() {
+          const orig = copyBtn.textContent;
+          copyBtn.textContent = '✓ Copiado!';
+          setTimeout(function () { copyBtn.textContent = orig; }, 2200);
+        }
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(texto).then(sucesso).catch(fallback);
+        } else {
+          fallback();
+        }
+
+        function fallback() {
+          try {
+            const ta = document.createElement('textarea');
+            ta.value = texto;
+            ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0;';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            sucesso();
+          } catch (_) {}
+        }
+      });
+    }
+
+    /* ── Botão Nova Declaração ───────────────── */
+    if (novoBtn) {
+      novoBtn.addEventListener('click', function () {
+        previewSec.hidden = true;
+        if (adPos1) adPos1.hidden = true;
+        form.reset();
+        form.querySelectorAll('.input-error').forEach(function (el) {
+          el.classList.remove('input-error');
+        });
+        const formSec = document.getElementById('form-section');
+        if (formSec) formSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
+  });
+</script>

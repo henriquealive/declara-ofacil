@@ -1,0 +1,8 @@
+---
+// src/pages/declaracao-de-uniao-estavel.astro
+import DeclaracaoLayout from '../layouts/DeclaracaoLayout.astro';
+import { declaracoes } from '../lib/declaracoes';
+
+const declaracao = declaracoes.find(d => d.slug === 'declaracao-de-uniao-estavel')!;
+---
+<DeclaracaoLayout declaracao={declaracao} />

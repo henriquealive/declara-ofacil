@@ -1,0 +1,98 @@
+---
+// src/pages/privacidade.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const atualizadoEm = '26 de maio de 2026';
+---
+
+<BaseLayout
+  title="Política de Privacidade"
+  description="Política de privacidade do DeclaraFácil. Saiba como usamos cookies e como suas informações são tratadas no nosso site."
+  canonical="/privacidade"
+>
+  <div class="content-page">
+    <div class="container">
+      <div class="content-page__inner">
+        <h1>Política de Privacidade</h1>
+        <p class="meta">Última atualização: {atualizadoEm}</p>
+
+        <div class="prose">
+          <h2>1. Quem somos</h2>
+          <p>
+            O <strong>DeclaraFácil</strong> (declaracaofacil.online) é um site que oferece modelos de declarações simples,
+            geradas diretamente no navegador do usuário, sem envio de dados a servidores.
+          </p>
+
+          <h2>2. Dados coletados</h2>
+          <p>
+            Nossas declarações são geradas <strong>100% localmente no seu navegador</strong>.
+            Os dados que você preenche nos formulários (nome, CPF, endereço, etc.) <strong>nunca são enviados,
+            armazenados ou processados por nossos servidores</strong>.
+          </p>
+          <p>
+            Podemos coletar, de forma anonimizada, dados de navegação como:
+          </p>
+          <ul>
+            <li>Páginas visitadas e tempo de permanência</li>
+            <li>Tipo de dispositivo e navegador (de forma agregada)</li>
+            <li>País de acesso (de forma agregada)</li>
+          </ul>
+          <p>
+            Esses dados são coletados por ferramentas de análise (como Google Analytics) e usados
+            exclusivamente para melhorar o site. Não identificam o usuário individualmente.
+          </p>
+
+          <h2>3. Cookies</h2>
+          <p>
+            Utilizamos cookies de terceiros para exibição de anúncios por meio do Google AdSense.
+            O Google usa cookies para exibir anúncios relevantes com base em visitas anteriores
+            a este site e a outros sites.
+          </p>
+          <p>
+            Você pode optar por não usar o cookie DART do Google acessando as
+            <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer">
+              configurações de anúncios do Google
+            </a>.
+          </p>
+
+          <h2>4. Google AdSense</h2>
+          <p>
+            Este site utiliza o Google AdSense para exibição de anúncios. O Google, como fornecedor
+            terceiro, usa cookies para exibir anúncios. Para mais informações, consulte a
+            <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">
+              Política de Privacidade do Google
+            </a>.
+          </p>
+
+          <h2>5. Segurança dos seus dados</h2>
+          <p>
+            Como nenhum dado pessoal é transmitido ao servidor, o risco de vazamento das informações
+            que você preenche é praticamente nulo. Todo o processamento ocorre dentro do seu próprio dispositivo.
+          </p>
+
+          <h2>6. Direitos do usuário (LGPD)</h2>
+          <p>
+            Em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018), você tem direito a:
+          </p>
+          <ul>
+            <li>Confirmar a existência de tratamento de dados</li>
+            <li>Solicitar a exclusão de eventuais dados coletados</li>
+            <li>Opor-se ao tratamento de dados para fins de publicidade</li>
+          </ul>
+
+          <h2>7. Contato</h2>
+          <p>
+            Para dúvidas ou solicitações relacionadas a esta política de privacidade, entre em contato:
+            <strong>privacidade@declaracaofacil.online</strong>
+          </p>
+
+          <h2>8. Alterações nesta política</h2>
+          <p>
+            Reservamo-nos o direito de atualizar esta política a qualquer momento. Mudanças significativas
+            serão comunicadas nesta página com a data de atualização.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

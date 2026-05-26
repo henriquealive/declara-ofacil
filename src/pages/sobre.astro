@@ -1,0 +1,75 @@
+---
+// src/pages/sobre.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { declaracoes } from '../lib/declaracoes';
+---
+
+<BaseLayout
+  title="Sobre o DeclaraFácil — Declarações Grátis no Navegador"
+  description="Conheça o DeclaraFácil: um site gratuito para gerar declarações simples, sem cadastro, sem servidor. Tudo funciona 100% no seu navegador."
+  canonical="/sobre"
+>
+  <div class="content-page">
+    <div class="container">
+      <div class="content-page__inner">
+        <h1>Sobre o DeclaraFácil</h1>
+        <p class="meta">Documentos simples, gerados no seu navegador, de graça.</p>
+
+        <div class="prose">
+          <h2>O que é o DeclaraFácil?</h2>
+          <p>
+            O <strong>DeclaraFácil</strong> é um serviço gratuito para gerar modelos de declarações simples
+            diretamente no navegador. Em vez de procurar um modelo genérico no Google, baixar um arquivo
+            .doc e editar manualmente, você preenche um formulário e o documento é gerado na hora,
+            pronto para imprimir ou copiar.
+          </p>
+
+          <h2>Por que criamos este site?</h2>
+          <p>
+            Muitas pessoas precisam de declarações simples — de residência para abrir conta no banco,
+            de comparecimento para justificar uma falta no trabalho, de hipossuficiência para requerer
+            justiça gratuita — e não sabem onde encontrar um modelo confiável e gratuito.
+          </p>
+          <p>
+            O DeclaraFácil resolve esse problema: modelos revisados, formulários simples e resultado imediato.
+          </p>
+
+          <h2>Como funciona a tecnologia?</h2>
+          <p>
+            Todo o processamento acontece diretamente no seu navegador, usando JavaScript.
+            <strong>Nenhum dado que você digita é enviado a qualquer servidor</strong>.
+            Quando você clica em "Gerar Declaração", o documento é montado localmente,
+            sem passar pela internet. Isso garante sua privacidade total.
+          </p>
+
+          <h2>As declarações têm validade jurídica?</h2>
+          <p>
+            As declarações geradas são documentos informais assinados pelo próprio declarante.
+            Em geral, têm validade para fins cadastrais (bancos, escolas, prefeituras) e em
+            situações onde a legislação não exige forma específica.
+          </p>
+          <p>
+            Para situações que exijam autenticidade formal — como processos judiciais que exijam
+            reconhecimento de firma, ou escrituras públicas — recomendamos autenticar o documento
+            em cartório ou consultar um advogado.
+          </p>
+
+          <h2>Declarações disponíveis</h2>
+          <ul>
+            {declaracoes.map(d => (
+              <li>
+                <a href={`/${d.slug}`}>{d.titulo}</a> — {d.descricao}
+              </li>
+            ))}
+          </ul>
+
+          <h2>Contato</h2>
+          <p>
+            Sugestões de novos tipos de declaração, correções ou dúvidas? Entre em contato:
+            <strong>contato@declaracaofacil.online</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

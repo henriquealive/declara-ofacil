@@ -1,0 +1,15 @@
+{
+  "name": "declarafacil",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "postbuild": "npx astro-sitemap"
+  },
+  "dependencies": {
+    "astro": "^4.5.0",
+    "@astrojs/sitemap": "^3.1.0"
+  }
+}

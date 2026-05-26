@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://declaracaofacil.online/sitemap-index.xml

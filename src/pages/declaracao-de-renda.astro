@@ -1,0 +1,8 @@
+---
+// src/pages/declaracao-de-renda.astro
+import DeclaracaoLayout from '../layouts/DeclaracaoLayout.astro';
+import { declaracoes } from '../lib/declaracoes';
+
+const declaracao = declaracoes.find(d => d.slug === 'declaracao-de-renda')!;
+---
+<DeclaracaoLayout declaracao={declaracao} />

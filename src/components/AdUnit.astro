@@ -1,0 +1,39 @@
+---
+// src/components/AdUnit.astro
+// Substitua CA_PUB pelo seu Publisher ID do AdSense após aprovação.
+// Substitua cada slot pelo ID real do slot correspondente.
+
+export interface Props {
+  slot: string;
+  format?: 'horizontal' | 'rectangle' | 'auto';
+  fullWidth?: boolean;
+  label?: string;
+}
+
+const {
+  slot,
+  format = 'auto',
+  fullWidth = false,
+  label = 'Publicidade',
+} = Astro.props;
+
+const CA_PUB = import.meta.env.PUBLIC_ADSENSE_CLIENT ?? 'ca-pub-7999785083569252';
+---
+
+<div class:list={['ad-unit', format === 'rectangle' && 'ad-unit--rectangle']} aria-label={label}>
+  <!-- Placeholder visual (remova após ativar AdSense) -->
+  <!-- <div class:list={['ad-placeholder', format === 'rectangle' ? 'ad-placeholder--rect' : 'ad-placeholder--horiz']}>
+    Anúncio — {label}
+  </div> -->
+
+  <!-- AdSense ativo -->
+  <ins
+    class="adsbygoogle"
+    style="display:block"
+    data-ad-client={CA_PUB}
+    data-ad-slot={slot}
+    data-ad-format={format}
+    data-full-width-responsive={fullWidth ? 'true' : 'false'}
+  ></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>

@@ -1,0 +1,133 @@
+---
+// src/pages/index.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+import DeclaracaoCard from '../components/DeclaracaoCard.astro';
+import AdUnit from '../components/AdUnit.astro';
+import { declaracoes } from '../lib/declaracoes';
+
+const orgSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "DeclaraFácil",
+  "url": "https://declaracaofacil.online",
+  "description": "Gere declarações simples, gratuitas e prontas para imprimir. Sem cadastro, sem servidor.",
+  "inLanguage": "pt-BR",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://declaracaofacil.online/#{search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+};
+---
+
+<BaseLayout
+  title="Gerar Declarações Grátis — Residência, Renda, Comparecimento e mais"
+  description="Gere declarações simples e prontas para imprimir: residência, renda, comparecimento, hipossuficiência e união estável. Grátis, sem cadastro, 100% no navegador."
+  canonical="/"
+  keywords="declarações grátis, gerar declaração online, declaração de residência, declaração de renda, declaração grátis Brasil"
+>
+  <!-- Org Schema -->
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+
+  <!-- ══ HERO ════════════════════════════════ -->
+  <section class="home-hero">
+    <div class="container">
+      <div class="home-hero__badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        100% gratuito · Sem cadastro · Sem servidor
+      </div>
+
+      <h1>Declarações prontas<br/>em segundos</h1>
+
+      <p class="home-hero__sub">
+        Preencha os campos, clique em gerar e imprima. Seus dados ficam apenas no seu navegador.
+      </p>
+
+      <div class="home-hero__meta">
+        <span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Nenhum dado enviado a servidores
+        </span>
+        <span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Pronto para imprimir em PDF
+        </span>
+        <span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Copie o texto com um clique
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ GRID DE DECLARAÇÕES ═══════════════════ -->
+  <section class="home-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Escolha o tipo de declaração</h2>
+        <p>Modelos completos, revisados juridicamente e prontos para assinar.</p>
+      </div>
+
+      <div class="cards-grid">
+        {declaracoes.map(d => <DeclaracaoCard declaracao={d} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ ANÚNCIO ════════════════════════════════ -->
+  <AdUnit slot="0000000001" format="horizontal" fullWidth label="Homepage" />
+
+  <!-- ══ COMO FUNCIONA ═════════════════════════ -->
+  <section class="home-section" style="background: var(--color-surface); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
+    <div class="container">
+      <div class="section-header">
+        <h2>Como funciona?</h2>
+        <p>Três passos simples para ter seu documento pronto.</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Escolha</h3>
+          <p>Selecione o tipo de declaração que você precisa entre as 5 opções disponíveis.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Preencha</h3>
+          <p>Informe seus dados nos campos do formulário. Tudo fica 100% no seu navegador.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Imprima</h3>
+          <p>Gere, imprima ou copie o texto. Assine e está pronto para usar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ AVISO LEGAL ════════════════════════════ -->
+  <section class="home-section">
+    <div class="container">
+      <div class="card" style="background: var(--color-primary-light); border-color: var(--color-primary-border); max-width: 720px;">
+        <div style="display: flex; gap: 1rem; align-items: flex-start;">
+          <div style="flex-shrink:0; color: var(--color-primary);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </div>
+          <div>
+            <strong style="color: var(--color-primary); font-size: var(--text-base);">Aviso importante</strong>
+            <p style="font-size: var(--text-sm); color: var(--color-text-muted); margin-top: 0.25rem; line-height: 1.6;">
+              As declarações geradas neste site são modelos de documentos informais para uso geral.
+              Não substituem orientação jurídica profissional. Para situações que exijam validade formal
+              (processos judiciais, cartório), consulte um advogado ou tabelião.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
